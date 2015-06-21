@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">网络统计</string>
+    <string-array name="drawerTitle">
+        <item>状态</item>
+        <item>规则</item>
+        <item>应用流量用量</item>
+    </string-array>
+    <string-array name="statusTabTitle">
+        <item>概览</item>
+        <item>状态</item>
+    </string-array>
+    <string name="navigation_drawer_open">打开导航抽屉</string>
+    <string name="navigation_drawer_close">关闭导航抽屉</string>
+    <string name="action_example">例子动作</string>
+    <string name="action_settings">设置</string>
+    <string name="action_new_rule">新规则</string>
+    <string name="title_activity_add_rule">添加规则</string>
+     <string name="network">网络连接</string>
+    <string-array name="networkConnection">
+        
+        <item >移动网络</item><item>无线网络</item>
+    </string-array>
+    <string name="ruleTimeRange">时间段</string>
+    <string name="tx">已发送：</string>
+    <string name="rx">已接收：</string>
+    <string name="dataTotal">总流量：</string>
+    <string name="noRunningApp">当前没有正在运行的应用。</string>
+    <string name="net_speed_notification_rate">速率：</string>
+    <string name="net_speed_notification_used">已用：</string>
+    <string name="sent">已发送：</string>
+    <string name="received">已接收：</string>
+    <string name="empty_list">列表为空。</string>
+    <string name="wlanNotifLable">无线网络—</string>
+    <string name="mobileNotifLable">移动网络—</string>
+    <string name="ruleItemPeriod">计量周期</string>
+    <string-array name="timeUnit">
+        <item>月</item><item >天</item>
+        <item >周</item>
+        
+        <item >年</item>
+    </string-array>
+    <string name="dataUsed">已用流量：</string>
+    <string name="ruleName">规则名称：</string>
+    <string name="sqlInsertError">数据库插入失败。</string>
+    <string name="ruleItemRemain">剩余流量：</string>
+    <string name="ruleItemTotal">总流量：</string>
+    <string name="ruleItemUsed">已用流量：</string>
+    <string name="ruleDelete">删除规则</string>
+    <string name="ruleEdit">编辑规则</string>
+    <string name="noRule">当前没有规则。</string>
+    <string name="notFilled">未填写。</string>
+
+</resources>

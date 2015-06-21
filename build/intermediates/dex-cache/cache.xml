@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v13/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9aa93835393824b436f366120c9ba8a0260ce75d">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-9052ba5a5a4c08e80b67a4718dcda430ead05459.jar" />
+    </item>
+    <item
+        jar="/home/fzn/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v2.1.0/ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474/MPAndroidChart-v2.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/MPAndroidChart-v2.1.0-025da486892edecb66f886c559a734c9e9ae01c4.jar" />
+    </item>
+    <item
+        jar="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-648115aebf21071fcc4be31285351e870cc1a290.jar" />
+    </item>
+    <item
+        jar="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-582e6517677427695a45a3368026b5fc3a41f2bc.jar" />
+    </item>
+    <item
+        jar="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v13/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="79a5b6d9fbab3b5fb4c6f86a1ed7a17722fd937b">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-5b71c6e1d04387706696283d63f52b6831e598d0.jar" />
+    </item>
+    <item
+        jar="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/exploded-aar/com.amulyakhare/com.amulyakhare.textdrawable/1.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d237556caead5b93d97e18a071059a2c0045978e">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-8f84b831a7dcbcd3ec541dc65981ef54fc385db6.jar" />
+    </item>
+    <item
+        jar="/opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="/media/fzn/新加卷/Private/Android/Studio/NetworkStatistics/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-d11b86e8a8d5a60125987e55ed19da6fe916ed6c.jar" />
+    </item>
+
+</items>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NetworkStatistics</string>
+    <string-array name="drawerTitle">
+        <item>Status</item>
+        <item>Rules</item>
+        <item>Apps Data Usage</item>
+    </string-array>
+    <string-array name="statusTabTitle">
+        <item>Overview</item>
+        <item>Status</item>
+    </string-array>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_new_rule">New Rule</string>
+    <string name="title_activity_add_rule">Add Rule</string>
+    <string name="network">Network</string>
+
+    <string-array name="networkConnection">
+        <item>Mobile Network</item>
+        <item>WLAN</item>
+    </string-array>
+
+    <string name="dataTotal">Total Data</string>
+    <string name="ruleTimeRange">Time Range</string>
+    <string name="noRunningApp">No application is running.</string>
+    <string name="sent">Sent: </string>
+    <string name="received">Received: </string>
+    <string name="noRule">No Rule is created.</string>
+    <string name="net_speed_notification_rate">Rate: </string>
+    <string name="net_speed_notification_used">Used: </string>
+    <string name="empty_list">Empty List</string>
+    <string name="tx">Transmitted: </string>
+    <string name="rx">Received: </string>
+    <string name="wlanNotifLable">WLAN - </string>
+    <string name="mobileNotifLable">Mobile - </string>
+    <string name="ruleItemPeriod">Period</string>
+    <string-array name="timeUnit">
+        <item>Month(s)</item>
+        <item>Day(s)</item>
+        <item >Week(s)</item>
+        <item >Year(s)</item>
+    </string-array>
+    <string name="dataUsed">Used</string>
+    <string name="ruleName">Rule Name</string>
+    <string name="sqlInsertError">Database inserting failed.</string>
+    <string-array name="dataUnit">
+        <item>MB</item>
+        <item>GB</item>
+    </string-array>
+    <string name="ruleItemTotal">Total Data:</string>
+    <string name="ruleItemUsed">Used Data:</string>
+    <string name="ruleItemRemain">Remain Data:</string>
+    <string name="notFilled">" isn't filled."</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello World!</string>
+    <string name="ruleEdit">Edit Rule</string>
+    <string name="ruleDelete">Delete Rule</string>
+
+</resources>
