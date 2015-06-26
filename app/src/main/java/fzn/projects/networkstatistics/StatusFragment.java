@@ -252,7 +252,7 @@ public class StatusFragment extends Fragment {
             }
             speedList.add(new Entry(fSpeed[0], 59));
             maxSpeedInList = maxSpeedInList < fSpeed[0] ? fSpeed[0] : maxSpeedInList;
-            speedChart.getAxisLeft().setAxisMaxValue(maxSpeedInList + 0.001f);
+            speedChart.getAxisLeft().setAxisMaxValue(maxSpeedInList + 0.2f);
             speedChart.setDescription(fSpeed[1] == 1 ? "KB/s" : "MB/s");
             speedChart.notifyDataSetChanged();
             speedChart.invalidate();

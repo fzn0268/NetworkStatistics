@@ -10,7 +10,8 @@
         <item
             android:id="@+id/action_example"
             android:title="@string/action_example"
-            android:showAsAction="withText|ifRoom">
+            android:showAsAction="withText|ifRoom"
+            android:visible="false">
         </item>
     </group>
 

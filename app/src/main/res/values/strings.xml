@@ -72,5 +72,6 @@
 
     <string name="speedDomainLabel">Time/second</string>
     <string name="speedRangeLabel">Speed/</string>
+    <string name="notFilled">" isn't filled."</string>
 
 </resources>

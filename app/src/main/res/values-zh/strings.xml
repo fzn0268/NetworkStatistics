@@ -21,7 +21,6 @@
         
         <item >移动网络</item><item>无线网络</item>
     </string-array>
-    <string name="ruleTimeRange">时间段</string>
     <string name="tx">已发送：</string>
     <string name="rx">已接收：</string>
     <string name="dataTotal">总流量：</string>
@@ -54,5 +53,12 @@
     <string name="rulePriority">优先级</string>
     <string name="rulePriorityHint">0为最低</string>
     <string name="rulePriority2">优先级：</string>
+    <string name="ruleTimeInterval">时间段</string>
+    <string name="speedDomainLabel">时间/秒</string>
+    <string name="speedRangeLabel">速度/</string>
+    <string name="sameTimeToast">起始时间应不同。</string>
+    <string name="notFilledToast">未填写。</string>
+    <string name="rangeAllDay">全天</string>
+    <string name="rangePartial">部分时间 </string>
 
 </resources>

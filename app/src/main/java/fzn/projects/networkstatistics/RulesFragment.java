@@ -40,8 +40,8 @@ import fzn.projects.networkstatistics.util.Util;
  * 规则碎片类
  * 从数据库中查询并显示已添加的规则，列出规则中的总流量、已用流量、可用流量
  */
-public class RulesFragment extends Fragment implements ListView.OnItemClickListener,
-	ListView.OnItemLongClickListener {
+public class RulesFragment extends Fragment implements
+		ListView.OnItemClickListener, ListView.OnItemLongClickListener {
 	private static final String TAG = RulesFragment.class.getSimpleName();
 
 	/**
@@ -56,8 +56,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 	// This is the Adapter being used to display the list's data.
     private SimpleCursorAdapter mAdapter;
 
-	private int longClickPos;
-	private SparseArray<Long> idOfPos = new SparseArray<>();
+	private long longClickId;
 
 	private ActionMode.Callback mActionModeCallback = new RulesActionModeCallback();
 	private ActionMode mActionMode;
@@ -216,7 +215,9 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 	@Override
 	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 		Log.d(TAG, "onItemLongClick");
-		longClickPos = position;
+		longClickId = position;
+		TextView idText = (TextView) view.findViewById(R.id.ruleId);
+		longClickId = Long.valueOf(idText.getText().toString());
 		if (mActionMode != null) {
 			return false;
 		}
@@ -254,7 +255,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
     	
 		@Override
 		protected void onPostExecute(Cursor result) {
-			longClickPos = 0;
+			longClickId = 0;
 			// Create an empty adapter we will use to display the loaded data.
 			mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.rule_item, result,
 					new String[] { ComboEntry._ID, ComboEntry.COLUMN_NAME, ComboEntry.COLUMN_QUANTUM,
@@ -273,7 +274,6 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 						}
 						if (columnIndex == cursor.getColumnIndex(ComboEntry._ID)) {
 							((TextView) view).setText(String.valueOf(cursor.getLong(columnIndex)));
-							idOfPos.put(longClickPos++, cursor.getLong(columnIndex));
 						}
 						if (columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_NAME))
 							((TextView) view).setText(cursor.getString(cursor.getColumnIndex(ComboEntry.COLUMN_NAME)));
@@ -298,7 +298,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 
 		@Override
 		protected void onPostExecute(Cursor result) {
-			longClickPos = 0;
+			longClickId = 0;
 			mAdapter.changeCursor(result);
 			mAdapter.notifyDataSetChanged();
 		}
@@ -347,7 +347,8 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 			switch (item.getItemId()) {
 				case R.id.rule_edit: {
 					Intent intent = new Intent(getActivity(), RuleOperationActivity.class);
-					intent.putExtra(Constants.Extra.COMBO_ID, idOfPos.get(longClickPos));
+					intent.putExtra(Constants.Extra.COMBO_ID, longClickId);
+					Log.d(TAG, "IDofPos " + longClickId);
 					startActivityForResult(intent, Constants.RULE_EDIT_REQUEST);
 					mActionMode.finish();
 					break;
@@ -356,9 +357,9 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 					//Toast.makeText(getActivity(), "Delete button pressed.", Toast.LENGTH_SHORT).show();
 					dbHelper.getWritableDatabase().delete(ComboEntry.TABLE_NAME,
 							ComboEntry._ID + " LIKE ?",
-							new String[]{String.valueOf(idOfPos.get(longClickPos))});
+							new String[]{String.valueOf(longClickId)});
 					Intent intent = new Intent(Constants.Intent.ACTION_RULE_DELETED);
-					intent.putExtra(Constants.Extra.COMBO_ID, idOfPos.get(longClickPos));
+					intent.putExtra(Constants.Extra.COMBO_ID, longClickId);
 					mLocalBcMgr.sendBroadcast(intent);
 					new RefreshRulesTask().execute(dbHelper);
 					mActionMode.finish();

@@ -100,6 +100,7 @@ public class RulesDaemon {
         mCursor = mDb.query(ComboEntry.TABLE_NAME, projection,
                 ComboEntry._ID + " LIKE ?",
                 new String[] { String.valueOf(id) }, null, null, null);
+        mCursor.moveToFirst();
         Rule rule = new Rule(mCursor.getLong(mCursor.getColumnIndex(ComboEntry._ID)),
                 (byte) mCursor.getShort(mCursor.getColumnIndex(ComboEntry.COLUMN_CONN)),
                 Util.resolveComboPeriod(mCursor.getString(mCursor.getColumnIndex(ComboEntry.COLUMN_PERIOD))),
@@ -328,14 +329,16 @@ public class RulesDaemon {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive");
-            long rowID;
+            long rowID = 0;
             if (intent.getAction().equals(Constants.Intent.ACTION_RULE_CHANGED)) {
                 rowID = intent.getLongExtra(Constants.Extra.COMBO_ID, -1);
+                Log.d(TAG, "rowID" + rowID);
                 reloadRule(rowID);
                 return;
             }
             if (intent.getAction().equals(Constants.Intent.ACTION_RULE_DELETED)) {
                 rowID = intent.getLongExtra(Constants.Extra.COMBO_ID, -1);
+                Log.d(TAG, "rowID" + rowID);
                 removeRule(rowID);
                 return;
             }

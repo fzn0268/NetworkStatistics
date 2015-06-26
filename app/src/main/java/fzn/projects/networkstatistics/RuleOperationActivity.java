@@ -264,7 +264,7 @@ public class RuleOperationActivity extends Activity {
 		} else {
 			rowID = db.update(ComboEntry.TABLE_NAME, values,
 					ComboEntry._ID + " LIKE ?",
-					new String[] { String.valueOf(intent.getIntExtra(Constants.Extra.COMBO_ID, -1)) });
+					new String[] { String.valueOf(intent.getLongExtra(Constants.Extra.COMBO_ID, -1)) });
 			Intent intent = new Intent(Constants.Intent.ACTION_RULE_CHANGED);
 			intent.putExtra(Constants.Extra.COMBO_ID, rowID);
 			setResult(Activity.RESULT_OK, intent);
