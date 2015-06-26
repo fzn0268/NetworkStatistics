@@ -137,7 +137,7 @@
                     android:tag="@string/ruleItemPeriod" />
 
                 <Spinner
-                    android:id="@+id/timeUnitSpinner"
+                    android:id="@+id/periodUnitSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -146,28 +146,64 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/timeRangeTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ruleTimeRange"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/rulePriority"
+                android:id="@+id/priorityTitle" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/priorityInput"
+                android:hint="@string/rulePriorityHint" />
+
+            <TextView
+                android:id="@+id/timeIntervalTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ruleTimeInterval"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/timeIntervalRadioGroup">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rangeAllDay"
+                    android:id="@+id/allDayRadio"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rangePartial"
+                    android:id="@+id/partialTimeRadio" />
+            </RadioGroup>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="fill_horizontal"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:id="@+id/timeIntervalLayout">
 
                 <TimePicker
-                    android:id="@+id/startTimePicker"
+                    android:id="@+id/beginTimePicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center"
                     android:timePickerMode="spinner" />
 
                 <TextView
-                    android:id="@+id/rangeText"
+                    android:id="@+id/line"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center_horizontal|center"

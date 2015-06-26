@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,7 +23,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,7 +42,7 @@ import fzn.projects.networkstatistics.util.Util;
  */
 public class RulesFragment extends Fragment implements ListView.OnItemClickListener,
 	ListView.OnItemLongClickListener {
-	private static final String TAG = "RulesFragment";
+	private static final String TAG = RulesFragment.class.getSimpleName();
 
 	/**
      * The fragment argument representing the section number for this
@@ -49,16 +51,19 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
 	private ListView mListView;
-	private NetworkStatisticsDbHelper dbHelper;
+	private SQLiteOpenHelper dbHelper;
 
 	// This is the Adapter being used to display the list's data.
     private SimpleCursorAdapter mAdapter;
 
 	private int longClickPos;
-	private ArrayList<Integer> idOfPos = new ArrayList<Integer>();
+	private SparseArray<Long> idOfPos = new SparseArray<>();
 
 	private ActionMode.Callback mActionModeCallback = new RulesActionModeCallback();
 	private ActionMode mActionMode;
+	private ArrayList<View> lastItems = new ArrayList<>();
+
+	private LocalBroadcastManager mLocalBcMgr;
 
 	/**
      * Returns a new instance of this fragment for the given section
@@ -93,6 +98,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 		Log.d(TAG, "onActivityResult");
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == Activity.RESULT_OK) {
+			mLocalBcMgr.sendBroadcast(data);
 			new RefreshRulesTask().execute(dbHelper);
 		}
 	}
@@ -108,6 +114,9 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		Log.d(TAG, "onCreate");
+		mLocalBcMgr = LocalBroadcastManager.getInstance(getActivity());
+		Intent intent = new Intent(Constants.Intent.ACTION_RULE_UPDATE);
+		mLocalBcMgr.sendBroadcastSync(intent);
 		super.onCreate(savedInstanceState);
     }
 	
@@ -124,7 +133,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 			mListView.setOnItemClickListener(this);
 			mListView.setOnItemLongClickListener(this);
 		}
-		dbHelper = new NetworkStatisticsDbHelper(getActivity());
+		dbHelper = NetworkStatisticsDbHelper.getInstance(getActivity());
         new LoadRulesTask().execute(dbHelper);
 
         return view;
@@ -214,6 +223,8 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 
 		mActionMode = getActivity().startActionMode(mActionModeCallback);
 		view.setSelected(true);
+		view.setBackgroundColor(Color.rgb(0, 0xCC, 0xCC));
+		lastItems.add(view);
 		return true;
 	}
 
@@ -230,15 +241,15 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 			SQLiteDatabase db = params[0].getReadableDatabase();
 
 	    	String[] projection = {
-	    		ComboEntry._ID,
-	    		ComboEntry.COLUMN_COMBO_NAME,
-	    		ComboEntry.COLUMN_QUANTUM,
-	    		ComboEntry.COLUMN_USED,
-	    		ComboEntry.COLUMN_REMAIN_DERIVED
+					ComboEntry._ID,
+					ComboEntry.COLUMN_NAME,
+					ComboEntry.COLUMN_QUANTUM,
+					ComboEntry.COLUMN_USED,
+					ComboEntry.COLUMN_REMAIN_DERIVED,
+					ComboEntry.COLUMN_PRIORITY
 	    	};
 
-			return db.query(ComboEntry.TABLE_NAME, projection, null, null, null, null,
-					ComboEntry.COLUMN_TIMESTAMP + " DESC");
+			return db.query(ComboEntry.TABLE_NAME, projection, null, null, null, null, null);
 		}
     	
 		@Override
@@ -246,10 +257,10 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 			longClickPos = 0;
 			// Create an empty adapter we will use to display the loaded data.
 			mAdapter = new SimpleCursorAdapter(getActivity(), R.layout.rule_item, result,
-					new String[] { ComboEntry._ID, ComboEntry.COLUMN_COMBO_NAME, ComboEntry.COLUMN_QUANTUM,
-							ComboEntry.COLUMN_USED, ComboEntry.COLUMN_REMAIN },
+					new String[] { ComboEntry._ID, ComboEntry.COLUMN_NAME, ComboEntry.COLUMN_QUANTUM,
+							ComboEntry.COLUMN_USED, ComboEntry.COLUMN_REMAIN, ComboEntry.COLUMN_PRIORITY },
 					new int[] { R.id.ruleId, R.id.ruleName, R.id.totalData,
-							R.id.usedData, R.id.remainData }, 0);
+							R.id.usedData, R.id.remainData, R.id.rulePriority }, 0);
 
 			mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 				@Override
@@ -258,14 +269,17 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 						if ((columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_QUANTUM)
 								|| columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_USED)
 								|| columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_REMAIN))) {
-							((TextView) view).setText(Util.byteConverter(cursor.getLong(columnIndex), false));
+							((TextView) view).setText(Util.byteConverter(cursor.getLong(columnIndex), false, "0.##"));
 						}
 						if (columnIndex == cursor.getColumnIndex(ComboEntry._ID)) {
-							((TextView) view).setText(String.valueOf(cursor.getInt(columnIndex)));
-							idOfPos.add(longClickPos++, cursor.getInt(columnIndex));
+							((TextView) view).setText(String.valueOf(cursor.getLong(columnIndex)));
+							idOfPos.put(longClickPos++, cursor.getLong(columnIndex));
 						}
-						if (columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_COMBO_NAME))
-							((TextView) view).setText(cursor.getString(cursor.getColumnIndex(ComboEntry.COLUMN_COMBO_NAME)));
+						if (columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_NAME))
+							((TextView) view).setText(cursor.getString(cursor.getColumnIndex(ComboEntry.COLUMN_NAME)));
+						if (columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_PRIORITY)) {
+							((TextView) view).setText(String.valueOf(cursor.getInt(cursor.getColumnIndex(ComboEntry.COLUMN_PRIORITY))));
+						}
 						return true;
 					}
 					return false;
@@ -280,24 +294,7 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 	 * 继承AsyncTask异步任务类，当规则被修改后，在后台重新加载
 	 * 数据库中存储的规则并显示，保证过程中不会因响应时间过长而阻塞应用。
 	 */
-	private class RefreshRulesTask extends AsyncTask<SQLiteOpenHelper, Integer, Cursor> {
-
-		@Override
-		protected Cursor doInBackground(SQLiteOpenHelper... params) {
-			// TODO 自动生成的方法存根
-			SQLiteDatabase db = params[0].getReadableDatabase();
-
-			String[] projection = {
-					ComboEntry._ID,
-					ComboEntry.COLUMN_COMBO_NAME,
-					ComboEntry.COLUMN_QUANTUM,
-					ComboEntry.COLUMN_USED,
-					ComboEntry.COLUMN_REMAIN_DERIVED
-			};
-
-			return db.query(ComboEntry.TABLE_NAME, projection, null, null, null, null,
-					ComboEntry.COLUMN_TIMESTAMP + " DESC");
-		}
+	private class RefreshRulesTask extends LoadRulesTask {
 
 		@Override
 		protected void onPostExecute(Cursor result) {
@@ -350,19 +347,23 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 			switch (item.getItemId()) {
 				case R.id.rule_edit: {
 					Intent intent = new Intent(getActivity(), RuleOperationActivity.class);
-					intent.putExtra(Constants.Extra.COMBOID, idOfPos.get(longClickPos));
+					intent.putExtra(Constants.Extra.COMBO_ID, idOfPos.get(longClickPos));
 					startActivityForResult(intent, Constants.RULE_EDIT_REQUEST);
 					mActionMode.finish();
 					break;
 				}
-				case R.id.rule_delete:
+				case R.id.rule_delete: {
 					//Toast.makeText(getActivity(), "Delete button pressed.", Toast.LENGTH_SHORT).show();
 					dbHelper.getWritableDatabase().delete(ComboEntry.TABLE_NAME,
 							ComboEntry._ID + " LIKE ?",
-							new String[] {String.valueOf(idOfPos.get(longClickPos))});
+							new String[]{String.valueOf(idOfPos.get(longClickPos))});
+					Intent intent = new Intent(Constants.Intent.ACTION_RULE_DELETED);
+					intent.putExtra(Constants.Extra.COMBO_ID, idOfPos.get(longClickPos));
+					mLocalBcMgr.sendBroadcast(intent);
 					new RefreshRulesTask().execute(dbHelper);
 					mActionMode.finish();
 					break;
+				}
 				default:
 					break;
 			}
@@ -376,6 +377,11 @@ public class RulesFragment extends Fragment implements ListView.OnItemClickListe
 		 */
 		@Override
 		public void onDestroyActionMode(ActionMode mode) {
+			for (View v : lastItems) {
+				v.setSelected(false);
+				v.setBackgroundColor(Color.TRANSPARENT);
+			}
+			lastItems.clear();
 			mActionMode = null;
 		}
 	}

@@ -20,6 +20,8 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
     private static final String COMMA = ",";
     private static final String SPACE = " ";
 
+	private static SQLiteOpenHelper mInstance = null;
+
 	/**
 	 * 创建应用信息表命令
 	 */
@@ -41,13 +43,14 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
     		"CREATE TABLE " + ComboEntry.TABLE_NAME + "(" +
     				ComboEntry._ID + " INTEGER PRIMARY KEY," +
     				ComboEntry.COLUMN_TIMESTAMP + SPACE + ComboEntry.COLUMN_TIMESTAMP_TYPE + COMMA +
-    				ComboEntry.COLUMN_COMBO_NAME + SPACE + ComboEntry.COLUMN_COMBO_NAME_TYPE + COMMA +
-    				ComboEntry.COLUMN_COMBO_CONN + SPACE + ComboEntry.COLUMN_COMBO_CONN_TYPE + COMMA +
+    				ComboEntry.COLUMN_NAME + SPACE + ComboEntry.COLUMN_NAME_TYPE + COMMA +
+    				ComboEntry.COLUMN_CONN + SPACE + ComboEntry.COLUMN_CONN_TYPE + COMMA +
     				ComboEntry.COLUMN_QUANTUM + SPACE + ComboEntry.COLUMN_QUANTUM_TYPE + COMMA +
     				ComboEntry.COLUMN_PERIOD + SPACE + ComboEntry.COLUMN_PERIOD_TYPE + COMMA +
 					ComboEntry.COLUMN_PERIOD_REMAIN + SPACE + ComboEntry.COLUMN_PERIOD_TYPE + COMMA +
-    				ComboEntry.COLUMN_TIME_RANGE_FROM + SPACE + ComboEntry.COLUMN_TIME_RANGE_FROM_TYPE + COMMA +
-    				ComboEntry.COLUMN_TIME_RANGE_TO + SPACE + ComboEntry.COLUMN_TIME_RANGE_TO_TYPE + COMMA +
+					ComboEntry.COLUMN_PRIORITY + SPACE + ComboEntry.COLUMN_PRIORITY_TYPE + COMMA +
+    				ComboEntry.COLUMN_TIME_INTERVAL_FROM + SPACE + ComboEntry.COLUMN_TIME_INTERVAL_FROM_TYPE + COMMA +
+    				ComboEntry.COLUMN_TIME_INTERVAL_TO + SPACE + ComboEntry.COLUMN_TIME_INTERVAL_TO_TYPE + COMMA +
     				ComboEntry.COLUMN_USED + SPACE + ComboEntry.COLUMN_USED_TYPE + ")";
     
     private static final String DELETE_APPLICATION_TABLE =
@@ -55,6 +58,15 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
     
     private static final String DELETE_COMBO_TABLE =
     		"DROP TABLE IF EXISTS " + ComboEntry.TABLE_NAME;
+
+	public static SQLiteOpenHelper getInstance(Context context) {
+		// Use the application context, which will ensure that you
+		// don't accidentally leak an Activity's context.
+		if (mInstance == null) {
+			mInstance = new NetworkStatisticsDbHelper(context.getApplicationContext());
+		}
+		return mInstance;
+	}
 
 	public NetworkStatisticsDbHelper(Context context, String name,
 			CursorFactory factory, int version) {
@@ -69,7 +81,7 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
 		// TODO 自动生成的构造函数存根
 	}
 	
-	public NetworkStatisticsDbHelper(Context context) {
+	private NetworkStatisticsDbHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 

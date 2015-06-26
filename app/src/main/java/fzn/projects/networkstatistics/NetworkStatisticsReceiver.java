@@ -3,9 +3,11 @@ package fzn.projects.networkstatistics;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
 /**
@@ -14,6 +16,8 @@ import android.util.Log;
  */
 public class NetworkStatisticsReceiver extends BroadcastReceiver {
     protected static final String TAG = "NetStatReceiver";
+    private SharedPreferences mSharedPref;
+    private SharedPreferences.Editor mEditor;
     public NetworkStatisticsReceiver() {
     }
 
@@ -25,6 +29,11 @@ public class NetworkStatisticsReceiver extends BroadcastReceiver {
         innerIntent.setAction(intent.getAction());
         IBinder binder = peekService(context, innerIntent);
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            mSharedPref = context.getSharedPreferences(Constants.SHARED_PREFERENCES,
+                    Context.MODE_PRIVATE);
+            mEditor = mSharedPref.edit();
+            mEditor.putLong(Constants.BOOT_TIMESTAMP, System.currentTimeMillis());
+            mEditor.apply();
             context.startService(innerIntent);
             return;
         }

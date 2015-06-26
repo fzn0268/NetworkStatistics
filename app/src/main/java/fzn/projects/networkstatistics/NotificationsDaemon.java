@@ -9,11 +9,12 @@ import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
 import fzn.projects.networkstatistics.util.Util;
@@ -24,7 +25,7 @@ import fzn.projects.networkstatistics.util.Util;
  * 及数据网络流量，并每隔1秒刷新。
  */
 public class NotificationsDaemon {
-	protected static final String TAG = "NotificationsDaemon";
+	protected static final String TAG = NotificationsDaemon.class.getSimpleName();
 	
 	private Intent notificationIntent;
 	private Context baseContext;
@@ -44,8 +45,10 @@ public class NotificationsDaemon {
 	
 	private String titleExtra;
 	
-	private TimerTask task;
-	private Timer timer;
+	//private TimerTask task;
+	//private Timer timer;
+	private final Handler showSpeedHandler = new Handler(Looper.getMainLooper());
+	private final Runnable showSpeedRunnable = new ShowSpeedRunnable();
 
 	/**
 	 * 通知栏守护类构造方法
@@ -75,22 +78,13 @@ public class NotificationsDaemon {
 	 * 生成信息并显示速率通知
 	 */
 	private void showNetSpeed() {
-		/*
-		if (connMgr.getActiveNetworkInfo() == null) {
-			if (notifShowing)
-				mNotificationManager.cancel(MeterNotification.NOTIFICATION_TAG, uid);
-			notifShowing = false;
-			return;
-		} else if (!notifShowing)
-			notifShowing = true;
-		*/
         long nowTotalRxBytes = getTotalRxBytes();
         long nowTimeStamp = System.currentTimeMillis();
-        speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / (nowTimeStamp - lastTimeStamp));//����ת��
-		String strSpeed = Util.byteConverter(speed, true);
+        speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / (nowTimeStamp - lastTimeStamp));//毫秒转换
+		String strSpeed = Util.byteConverter(speed, true, "0.##");
 		Intent speedIntent = new Intent();
-		speedIntent.setAction(Constants.Intent.KEY_INTENT_SPEED_VALUE);
-		speedIntent.putExtra(Constants.Extra.SPEED, strSpeed);
+		speedIntent.setAction(Constants.Intent.ACTION_NET_INFO);
+		speedIntent.putExtra(Constants.Extra.SPEED, speed);
 		LocalBroadcastManager.getInstance(baseContext).sendBroadcast(speedIntent);
         
         lastTimeStamp = nowTimeStamp;
@@ -123,10 +117,10 @@ public class NotificationsDaemon {
         notification.contentView.setTextViewText(R.id.notificationWLANUsed,
 				res.getString(R.string.net_speed_notification_used) +
 						res.getString(R.string.wlanNotifLable) +
-						Util.byteConverter((TrafficStats.getTotalRxBytes() - TrafficStats.getMobileRxBytes()), false));
+						Util.byteConverter((TrafficStats.getTotalRxBytes() - TrafficStats.getMobileRxBytes()), false, "0.##"));
         notification.contentView.setTextViewText(R.id.notificationMobileUsed,
 				res.getString(R.string.mobileNotifLable) +
-						Util.byteConverter(TrafficStats.getMobileRxBytes(), false));
+						Util.byteConverter(TrafficStats.getMobileRxBytes(), false, "0.##"));
 
 				mNotificationManager.notify(MeterNotification.NOTIFICATION_TAG, uid, notification);
 	}
@@ -146,9 +140,10 @@ public class NotificationsDaemon {
 	protected void scheduleNotification() {
 		if (connMgr.getActiveNetworkInfo() != null) {
 			if (!notifShowing) {
-				timer = new Timer();
-				task = new ShowSpeedTask();
-				timer.schedule(task, 1000, 1000); // 1s后启动任务，每1s执行一次
+				//timer = new Timer();
+				//task = new ShowSpeedTask();
+				//timer.schedule(task, 1000, 1000); // 1s后启动任务，每1s执行一次
+				showSpeedHandler.post(showSpeedRunnable);
 				notifShowing = true;
 			}
 		}
@@ -160,8 +155,9 @@ public class NotificationsDaemon {
 	 */
 	protected void cancelNotification() {
 		if (notifShowing) {
-			timer.cancel();
-			task.cancel();
+			//timer.cancel();
+			//task.cancel();
+			showSpeedHandler.removeCallbacks(showSpeedRunnable);
 			mNotificationManager.cancel(MeterNotification.NOTIFICATION_TAG, uid);
 			speed = 0;
 			notifShowing = false;
@@ -185,6 +181,19 @@ public class NotificationsDaemon {
 		@Override
 		public void run() {
 			showNetSpeed();
+		}
+	}
+
+	private class ShowSpeedRunnable implements Runnable {
+		/**
+		 * Starts executing the active part of the class' code. This method is
+		 * called when a thread is started that has been created with a class which
+		 * implements {@code Runnable}.
+		 */
+		@Override
+		public void run() {
+			showNetSpeed();
+			showSpeedHandler.postDelayed(this, 1000);
 		}
 	}
 }

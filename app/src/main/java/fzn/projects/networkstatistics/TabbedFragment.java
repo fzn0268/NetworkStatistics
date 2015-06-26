@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import android.widget.TextView;
  * 合并在此碎片中切换显示。
  */
 public class TabbedFragment extends Fragment {
+    private static final String TAG = TabbedFragment.class.getSimpleName();
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -45,6 +47,7 @@ public class TabbedFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private int sectionNumber;
 
     private String[] mTabTitleItems;
 
@@ -75,7 +78,12 @@ public class TabbedFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+        if (getArguments() != null) {
+            sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER);
+        }
     }
 
     /**
@@ -150,9 +158,9 @@ public class TabbedFragment extends Fragment {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return OverviewFragment.newInstance(position + 1);
-                case 1:
                     return StatusFragment.newInstance(position + 1);
+                case 1:
+                    return OverviewFragment.newInstance(position + 1);
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
             }
@@ -201,6 +209,21 @@ public class TabbedFragment extends Fragment {
 
         public PlaceholderFragment() {
         }
+
+        /**
+         * Called to do initial creation of a fragment.  This is called after
+         * {@link #onAttach(Activity)} and before
+         * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+         * <p/>
+         * <p>Note that this can be called while the fragment's activity is
+         * still in the process of being created.  As such, you can not rely
+         * on things like the activity's content view hierarchy being initialized
+         * at this point.  If you want to do work once the activity itself is
+         * created, see {@link #onActivityCreated(Bundle)}.
+         *
+         * @param savedInstanceState If the fragment is being re-created from
+         *                           a previous saved state, this is the state.
+         */
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

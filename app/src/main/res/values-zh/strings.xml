@@ -7,8 +7,8 @@
         <item>应用流量用量</item>
     </string-array>
     <string-array name="statusTabTitle">
-        <item>概览</item>
         <item>状态</item>
+        <item>概览</item>
     </string-array>
     <string name="navigation_drawer_open">打开导航抽屉</string>
     <string name="navigation_drawer_close">关闭导航抽屉</string>
@@ -50,5 +50,9 @@
     <string name="ruleEdit">编辑规则</string>
     <string name="noRule">当前没有规则。</string>
     <string name="notFilled">未填写。</string>
+    <string name="title_activity_edit_rule">编辑规则</string>
+    <string name="rulePriority">优先级</string>
+    <string name="rulePriorityHint">0为最低</string>
+    <string name="rulePriority2">优先级：</string>
 
 </resources>

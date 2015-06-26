@@ -135,14 +135,10 @@ public class MainActivity extends Activity
     }
 
 	@Override
-	public void onFragmentInteraction(String label) {
+	public void onFragmentInteraction(int buttonId) {
 		// TODO 自动生成的方法存根
-		switch (Integer.getInteger(label)) {
-            case 1:
-                mTitle = mStatusTitleItems[0];
-                break;
-            case 2:
-                mTitle = mStatusTitleItems[1];
+		switch (buttonId) {
+            default:
                 break;
         }
 	}

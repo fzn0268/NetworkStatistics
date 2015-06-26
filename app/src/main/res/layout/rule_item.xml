@@ -15,7 +15,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="No."
             android:id="@+id/ruleId"
-            android:textSize="60dp" />
+            android:textSize="@dimen/rule_id_font_size" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -84,6 +84,24 @@
                     android:text="" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rulePriority2"
+                    android:id="@+id/priorityTitle2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rulePriority" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

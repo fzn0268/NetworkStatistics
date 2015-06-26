@@ -11,6 +11,8 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import fzn.projects.networkstatistics.util.RulesDaemon;
+
 /**
  * 服务类
  * 处理后台任务，管理速率通知
@@ -26,6 +28,7 @@ public class NetworkStatisticsService extends Service {
     private NetworkInfo activeInfo;
 
     private NotificationsDaemon notifDaemon;
+    private RulesDaemon rulesDaemon;
 
     public NetworkStatisticsService() {
     }
@@ -45,6 +48,7 @@ public class NetworkStatisticsService extends Service {
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(netStatReceiver, intentFilter);
         notifDaemon = new NotificationsDaemon(this);
+        rulesDaemon = new RulesDaemon(this);
         if (connManager.getActiveNetworkInfo() != null)
             notifDaemon.scheduleNotification();
     }
@@ -90,7 +94,7 @@ public class NetworkStatisticsService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-
+        rulesDaemon.start();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -106,6 +110,7 @@ public class NetworkStatisticsService extends Service {
         super.onDestroy();
         instance = null;
         unregisterReceiver(netStatReceiver);
+        rulesDaemon.stop();
     }
 
     @Override

@@ -55,7 +55,7 @@ public class MeterNotification {
 		//final String title = res.getString(R.string.net_speed_notification_rate, titleString);
 		//final String text = res.getString(R.string.net_speed_notification_used, textString);
 		
-		final RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.net_speed_notification);
+		final RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.meter_notification);
 		//contentView.setTextViewText(R.id.notificationRate, title);
 
 		final NotificationCompat.Builder builder = new NotificationCompat.Builder(
@@ -81,7 +81,7 @@ public class MeterNotification {
 
 				// Provide a large icon, shown with the notification in the
 				// notification drawer on devices running Android 3.0 or later.
-				.setLargeIcon(picture)
+				// .setLargeIcon(picture)
 
 				// Set ticker text (preview) information for this notification.
 				.setTicker(ticker)
