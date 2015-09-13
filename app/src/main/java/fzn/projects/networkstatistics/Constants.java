@@ -1,12 +1,11 @@
 package fzn.projects.networkstatistics;
 
 import android.net.ConnectivityManager;
-import android.util.SparseArray;
 
 /**
  * Created by FzN on 15/6/7.
- * 常量类
- * 管理应用内交互所使用的常量
+ * 常量
+ * 管理应用内使用的常量
  */
 public final class Constants {
     public static final char[] TIME_UNIT = { 'm', 'd', 'w', 'y' }; // 时间单位

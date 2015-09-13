@@ -15,19 +15,17 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import java.util.TimerTask;
-
 import fzn.projects.networkstatistics.util.Util;
 
 /**
- * 通知栏守护类
+ * 通知栏守护
  * 在通知栏产生通知，显示网速、当前所用网络状态、自开机起已用的无线网络
  * 及数据网络流量，并每隔1秒刷新。
  */
 public class NotificationsDaemon {
 	protected static final String TAG = NotificationsDaemon.class.getSimpleName();
-	
-	private Intent notificationIntent;
+	private static final int INTERVAL = 1000;
+
 	private Context baseContext;
 	private Resources res;
 	private NotificationManager mNotificationManager;
@@ -44,24 +42,18 @@ public class NotificationsDaemon {
 	private int uid;
 	
 	private String titleExtra;
-	
-	//private TimerTask task;
-	//private Timer timer;
+
 	private final Handler showSpeedHandler = new Handler(Looper.getMainLooper());
 	private final Runnable showSpeedRunnable = new ShowSpeedRunnable();
 
-	/**
-	 * 通知栏守护类构造方法
-	 * @param context 应用上下文
-	 */
-	public NotificationsDaemon(Context context) {
-		notificationIntent = new Intent(context, MainActivity.class);
+	public NotificationsDaemon(@android.support.annotation.NonNull Context context) {
+		Intent notificationIntent = new Intent(context, MainActivity.class);
 		baseContext = context;
 		res = context.getResources();
 		uid = context.getApplicationInfo().uid;
 		mNotificationManager = 
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notification = MeterNotification.notify(context, null, "...", "...", notificationIntent);
+		notification = MeterNotification.notify(context, "...", notificationIntent);
 		
 		connMgr = (ConnectivityManager) 
 		        context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -70,12 +62,11 @@ public class NotificationsDaemon {
 
 		lastTotalRxBytes = getTotalRxBytes();  
 		lastTimeStamp = System.currentTimeMillis();
-		//scheduleNotification();
 	}
 
 	/**
-	 * 显示速率方法
-	 * 生成信息并显示速率通知
+	 * 显示速率
+	 * 生成信息并显示通知
 	 */
 	private void showNetSpeed() {
         long nowTotalRxBytes = getTotalRxBytes();
@@ -104,13 +95,6 @@ public class NotificationsDaemon {
 				break;
 			}
 		}
-        /*
-        Message msg = mHandler.obtainMessage();
-        msg.what = 100;
-        msg.obj = String.valueOf(speed) + " kb/s";
-        
-        mHandler.sendMessage(msg);//更新界面
-        */
 
         notification.contentView.setTextViewText(R.id.notificationRate, strSpeed);
         notification.contentView.setTextViewText(R.id.notificationConnInfo, titleExtra);
@@ -122,13 +106,9 @@ public class NotificationsDaemon {
 				res.getString(R.string.mobileNotifLable) +
 						Util.byteConverter(TrafficStats.getMobileRxBytes(), false, "0.##"));
 
-				mNotificationManager.notify(MeterNotification.NOTIFICATION_TAG, uid, notification);
+		mNotificationManager.notify(MeterNotification.TAG, uid, notification);
 	}
 
-	/**
-	 * 获取接收到的总流量
-	 * @return 接收到的总流量
-	 */
     private long getTotalRxBytes() {
         return TrafficStats.getUidRxBytes(uid) == 
         		TrafficStats.UNSUPPORTED ? 0 : TrafficStats.getTotalRxBytes();
@@ -140,9 +120,6 @@ public class NotificationsDaemon {
 	protected void scheduleNotification() {
 		if (connMgr.getActiveNetworkInfo() != null) {
 			if (!notifShowing) {
-				//timer = new Timer();
-				//task = new ShowSpeedTask();
-				//timer.schedule(task, 1000, 1000); // 1s后启动任务，每1s执行一次
 				showSpeedHandler.post(showSpeedRunnable);
 				notifShowing = true;
 			}
@@ -155,32 +132,10 @@ public class NotificationsDaemon {
 	 */
 	protected void cancelNotification() {
 		if (notifShowing) {
-			//timer.cancel();
-			//task.cancel();
 			showSpeedHandler.removeCallbacks(showSpeedRunnable);
-			mNotificationManager.cancel(MeterNotification.NOTIFICATION_TAG, uid);
+			mNotificationManager.cancel(MeterNotification.TAG, uid);
 			speed = 0;
 			notifShowing = false;
-		}
-	}
-
-	protected long getSpeed() {
-		return speed;
-	}
-
-	/**
-	 * 显示速率计时任务类
-	 * 封装了显示速率方法{@link NotificationsDaemon#showNetSpeed}
-	 */
-	private class ShowSpeedTask extends TimerTask {
-
-		/**
-		 * The task to run should be specified in the implementation of the {@code run()}
-		 * method.
-		 */
-		@Override
-		public void run() {
-			showNetSpeed();
 		}
 	}
 
@@ -193,7 +148,7 @@ public class NotificationsDaemon {
 		@Override
 		public void run() {
 			showNetSpeed();
-			showSpeedHandler.postDelayed(this, 1000);
+			showSpeedHandler.postDelayed(this, INTERVAL);
 		}
 	}
 }

@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarLineChartBase;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -29,7 +28,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,11 +41,11 @@ import fzn.projects.networkstatistics.util.Util;
  */
 
 /**
- * 状态碎片类
- * 展示设备当前的网络状态（待实现）
+ * 状态碎片
+ * 展示设备当前的网速状态
  */
 public class StatusFragment extends Fragment {
-    public static final String TAG = "StatusFragment";
+    public static final String TAG = StatusFragment.class.getSimpleName();
 
 	/**
      * The fragment argument representing the section number for this
@@ -57,13 +55,17 @@ public class StatusFragment extends Fragment {
     private int sectionNumber;
 
     private LocalBroadcastManager localBcMgr;
+    @android.support.annotation.Nullable
     private BroadcastReceiver speedBcRecvr;
     private TextView speedText;
     private LineChart speedChart;
+    @android.support.annotation.NonNull
     private DecimalFormat mDF = new DecimalFormat();
     private ArrayList<Entry> speedList;
 
+    @android.support.annotation.Nullable
     private Binder binder;
+    @android.support.annotation.NonNull
     private ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -76,15 +78,17 @@ public class StatusFragment extends Fragment {
         }
     };
 
+    @android.support.annotation.Nullable
     private OnFragmentInteractionListener mListener;
     
 	/**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-	public static StatusFragment newInstance(int sectionNumber) {
-		StatusFragment fragment = new StatusFragment();
-		Bundle args = new Bundle();
+    @android.support.annotation.NonNull
+    public static StatusFragment newInstance(int sectionNumber) {
+        StatusFragment fragment = new StatusFragment();
+        Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
@@ -104,7 +108,7 @@ public class StatusFragment extends Fragment {
     }
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_status, container, false);
@@ -170,7 +174,7 @@ public class StatusFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@android.support.annotation.NonNull Activity activity) {
         Log.d(TAG, "onAttach");
         super.onAttach(activity);
         final Intent intent = new Intent(getActivity(), NetworkStatisticsService.class);
@@ -198,7 +202,7 @@ public class StatusFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int buttonId);
+        void onFragmentInteraction(int buttonId);
     }
 
     private class SpeedBroadcastReceiver extends BroadcastReceiver {
@@ -239,7 +243,7 @@ public class StatusFragment extends Fragment {
          * @param intent  The Intent being received.
          */
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @android.support.annotation.NonNull Intent intent) {
             long speed = intent.getLongExtra(Constants.Extra.SPEED, -1);
             float[] fSpeed = speedConverter(speed);
             float maxSpeedInList = 0;
@@ -259,6 +263,7 @@ public class StatusFragment extends Fragment {
         }
     }
 
+    @android.support.annotation.NonNull
     private float[] speedConverter(long bytes) {
         if (bytes > 0x40000000) // GB
             return new float[] {((float) bytes / 0x100000), 2}; // MB

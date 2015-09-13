@@ -26,10 +26,12 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
 	final InterestingConfigChanges mLastConfig = new InterestingConfigChanges();
     final PackageManager mPm;
 
+    @android.support.annotation.Nullable
     List<AppEntry> mApps;
+    @android.support.annotation.Nullable
     PackageIntentReceiver mPackageObserver;
 
-    public AppListLoader(Context context) {
+    public AppListLoader(@android.support.annotation.NonNull Context context) {
         super(context);
 
         // Retrieve the package manager for later use; note we don't
@@ -44,7 +46,7 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
     public static final Comparator<AppEntry> ALPHA_COMPARATOR = new Comparator<AppEntry>() {
         private final Collator sCollator = Collator.getInstance();
         @Override
-        public int compare(AppEntry object1, AppEntry object2) {
+        public int compare(@android.support.annotation.NonNull AppEntry object1, @android.support.annotation.NonNull AppEntry object2) {
             return sCollator.compare(object1.getLabel(), object2.getLabel());
         }
     };
@@ -54,19 +56,20 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
      * called in a background thread and should generate a new set of
      * data to be published by the loader.
      */
+    @android.support.annotation.NonNull
     @Override public List<AppEntry> loadInBackground() {
         // Retrieve all known applications.
         List<ApplicationInfo> apps = mPm.getInstalledApplications(
                 PackageManager.GET_UNINSTALLED_PACKAGES |
                 PackageManager.GET_DISABLED_COMPONENTS);
         if (apps == null) {
-            apps = new ArrayList<ApplicationInfo>();
+            apps = new ArrayList<>();
         }
 
         final Context context = getContext();
 
         // Create corresponding array of entries and load their labels.
-        List<AppEntry> entries = new ArrayList<AppEntry>(apps.size());
+        List<AppEntry> entries = new ArrayList<>(apps.size());
         for (int i=0; i<apps.size(); i++) {
             AppEntry entry = new AppEntry(this, apps.get(i));
             entry.loadLabel(context);
@@ -85,7 +88,8 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
      * super class will take care of delivering it; the implementation
      * here just adds a little more logic.
      */
-    @Override public void deliverResult(List<AppEntry> apps) {
+    @Override
+    public void deliverResult(@android.support.annotation.Nullable List<AppEntry> apps) {
         if (isReset()) {
             // An async query came in while the loader is stopped.  We
             // don't need the result.
@@ -195,7 +199,7 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
         final Configuration mLastConfiguration = new Configuration();
         int mLastDensity;
 
-        boolean applyNewConfig(Resources res) {
+        boolean applyNewConfig(@android.support.annotation.NonNull Resources res) {
             int configChanges = mLastConfiguration.updateFrom(res.getConfiguration());
             boolean densityChanged = mLastDensity != res.getDisplayMetrics().densityDpi;
             if (densityChanged || (configChanges&(ActivityInfo.CONFIG_LOCALE

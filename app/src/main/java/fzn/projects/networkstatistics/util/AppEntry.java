@@ -14,21 +14,24 @@ import android.graphics.drawable.Drawable;
 public class AppEntry {
 
 	private final AppListLoader mLoader;
+    @android.support.annotation.NonNull
     private final ApplicationInfo mInfo;
+    @android.support.annotation.NonNull
     private final File mApkFile;
     private String mLabel;
     private Drawable mIcon;
     private boolean mMounted;
 
-	
-	public AppEntry(AppListLoader loader, ApplicationInfo info) {
-		// TODO 自动生成的构造函数存根
-		mLoader = loader;
+
+    public AppEntry(AppListLoader loader, @android.support.annotation.NonNull ApplicationInfo info) {
+        // TODO 自动生成的构造函数存根
+        mLoader = loader;
         mInfo = info;
         mApkFile = new File(info.sourceDir);
 	}
 
-	public ApplicationInfo getApplicationInfo() {
+    @android.support.annotation.NonNull
+    public ApplicationInfo getApplicationInfo() {
         return mInfo;
     }
 
@@ -36,7 +39,8 @@ public class AppEntry {
         return mLabel;
     }
 
-	public Drawable getIcon() {
+    @android.support.annotation.Nullable
+    public Drawable getIcon() {
         if (mIcon == null) {
             if (mApkFile.exists()) {
                 mIcon = mInfo.loadIcon(mLoader.mPm);
@@ -63,7 +67,7 @@ public class AppEntry {
         return mLabel;
     }
 
-    void loadLabel(Context context) {
+    void loadLabel(@android.support.annotation.NonNull Context context) {
         if (mLabel == null || !mMounted) {
             if (!mApkFile.exists()) {
                 mMounted = false;

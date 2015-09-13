@@ -10,7 +10,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
-import android.util.SparseArray;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -29,7 +28,8 @@ public class AppContent {
 	/**
 	 * An array of sample (dummy) items.
 	 */
-	public List<Map<String, Object>> appsList = new ArrayList<Map<String, Object>>();
+	@android.support.annotation.NonNull
+	public List<Map<String, Object>> appsList = new ArrayList<>();
 
 	/**
 	 * A map of sample (dummy) items, by ID.
@@ -37,14 +37,14 @@ public class AppContent {
 	//public SparseArray<AppItem> itemMap = new SparseArray<AppItem>();
 	
 	public final PackageManager pm;
-	
-	public AppContent(Context context) {
+
+	public AppContent(@android.support.annotation.NonNull Context context) {
 		pm = context.getPackageManager();
 	}
 
-	private void addItem(int order, AppItem item) {
+	private void addItem(int order, @android.support.annotation.NonNull AppItem item) {
 		//itemMap.put(order, item);
-		Map<String, Object> itemElem = new HashMap<String, Object>();
+		Map<String, Object> itemElem = new HashMap<>();
 		itemElem.put("uid", item.uid);
 		itemElem.put("label", item.label);
 		itemElem.put("icon", item.icon);
@@ -58,11 +58,13 @@ public class AppContent {
 	 */
 	public class AppItem {
 		public final int uid;
+		@android.support.annotation.NonNull
 		public final String label;
 		public final Drawable icon;
+		@android.support.annotation.NonNull
 		public final String strTx, strRx;
 
-		public AppItem(ApplicationInfo appInfo) {
+		public AppItem(@android.support.annotation.NonNull ApplicationInfo appInfo) {
 			this.uid = appInfo.uid;
 			this.label = appInfo.loadLabel(pm).toString();
 			this.icon = appInfo.loadIcon(pm);
@@ -74,6 +76,7 @@ public class AppContent {
 	        else strRx = TrafficStats.getUidRxBytes(uid) + "B";
 		}
 
+		@android.support.annotation.NonNull
 		@Override
 		public String toString() {
 			return label;
@@ -84,6 +87,7 @@ public class AppContent {
 	 * 加载应用列表，便于异步任务实现。
 	 * @return 应用列表
 	 */
+	@android.support.annotation.NonNull
 	public List<Map<String, Object>> loadItem() {
 		int count = 0;
 		for (ApplicationInfo appInfo : pm.getInstalledApplications(0)) {

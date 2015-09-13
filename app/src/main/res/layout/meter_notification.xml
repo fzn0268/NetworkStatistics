@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView" />
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/rateLine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -28,6 +24,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/notificationRateTitle"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff333333"
             android:textStyle="bold" />
@@ -37,15 +34,17 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/notificationRate"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ff333333"
             android:textStyle="bold" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rateLine">
 
         <TextView
             android:id="@+id/notificationWLANUsed"
@@ -53,8 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="6dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
             android:textColor="#ff333333" />
 
         <TextView
@@ -62,11 +61,12 @@
             style="@style/NotificationText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/notificationWLANUsed"
             android:paddingBottom="6dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:paddingEnd="6dp"
+            android:paddingStart="6dp"
             android:textColor="#ff333333" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,36 +1,16 @@
 package fzn.projects.networkstatistics;
 
 import android.app.Activity;
-import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.graphics.Color;
-import android.os.Binder;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
-import com.cardiomood.android.controls.gauge.SpeedometerGauge;
-
-import fzn.projects.networkstatistics.util.Util;
 
 /**
- * 概览类
- * 展示设备截至当前所有规则的状态（待实现）
+ * 概览
+ * （待实现）
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link OverviewFragment.OnFragmentInteractionListener} interface
@@ -58,6 +38,7 @@ public class OverviewFragment extends Fragment {
      * @return A new instance of fragment OverviewFragment.
      */
     // TODO: Rename and change types and number of parameters
+    @android.support.annotation.NonNull
     public static OverviewFragment newInstance(int sectionNumber) {
         OverviewFragment fragment = new OverviewFragment();
         Bundle args = new Bundle();
@@ -80,7 +61,7 @@ public class OverviewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
         // Inflate the layout for this fragment
@@ -97,7 +78,7 @@ public class OverviewFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@android.support.annotation.NonNull Activity activity) {
         Log.d(TAG, "onAttach");
         super.onAttach(activity);
         try {
@@ -126,7 +107,7 @@ public class OverviewFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(int buttonId);
+        void onFragmentInteraction(int buttonId);
     }
 
 }

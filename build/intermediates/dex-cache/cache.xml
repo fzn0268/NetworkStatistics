@@ -2,74 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v13/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="9aa93835393824b436f366120c9ba8a0260ce75d">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-8e995bb58dedc0901b5462ccd2e84d702b1cf88b.jar" />
+        jar="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
+        jumboMode="false" revision="22.0.1" sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\classes-0ac2f2a1a931d71e4c377610a3a73f51b3d9f6b2.jar" />
     </item>
     <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.amulyakhare/com.amulyakhare.textdrawable/1.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="d237556caead5b93d97e18a071059a2c0045978e">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-77dd1771476ee11fa3a5b4cd979f393069546077.jar" />
+        jar="C:\Users\FzN\.gradle\caches\modules-2\files-2.1\com.github.PhilJay\MPAndroidChart\v2.1.3\3fce86548feba9dd220128fa651498c51d099cd8\MPAndroidChart-v2.1.3.jar"
+        jumboMode="false" revision="22.0.1" sha1="3fce86548feba9dd220128fa651498c51d099cd8">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\MPAndroidChart-v2.1.3-304c2b6eec44daf2323cb1acc6ec41eb690034b1.jar" />
     </item>
     <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-a28262acdc70f719c276dc41b07a2ac694af2244.jar" />
+        jar="C:\Users\FzN\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\18.0\cce0823396aa693798f8882e64213b1772032b09\guava-18.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="cce0823396aa693798f8882e64213b1772032b09">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\guava-18.0-91a0540a8f3f203b4137c0c4f38731f046f5fb97.jar" />
     </item>
     <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v13/22.2.0/jars/libs/internal_impl-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="79a5b6d9fbab3b5fb4c6f86a1ed7a17722fd937b">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-9efac9b90034b5568aa2f3ca224853bafb63b9c7.jar" />
+        jar="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-4bb2e0b3e081673e78e146c364a27e201bc38c91.jar" />
     </item>
     <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-c6eccd127801468e8852970630f0f3cc82e3e391.jar" />
+        jar="E:\Program Files\Android-SDK-Windows\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-90c3355cf199c2a5a59a939eeb107d2f7fb30d7e.jar" />
     </item>
     <item
-        jar="/home/fzn/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/16.0.1/5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5/guava-16.0.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="5fa98cd1a63c99a44dd8d3b77e4762b066a5d0c5">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/guava-16.0.1-24dc307f5503398c2ff299e5cb5a4e550a8a7166.jar" />
+        jar="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\classes.jar"
+        jumboMode="false" revision="22.0.1" sha1="bb0ac3f3ee2d71854501cc28e52cc84a20209b41">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\classes-81fb53378fafc7b448a38843cdf23dc39767c2e5.jar" />
     </item>
     <item
-        jar="/home/fzn/.gradle/caches/modules-2/files-2.1/com.github.PhilJay/MPAndroidChart/v2.1.0/ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474/MPAndroidChart-v2.1.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="ec46f9251e1e0ee60e1b6beae8b16f2e0fdee474">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/MPAndroidChart-v2.1.0-025da486892edecb66f886c559a734c9e9ae01c4.jar" />
-    </item>
-    <item
-        jar="/opt/android-sdk-linux/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-d11b86e8a8d5a60125987e55ed19da6fe916ed6c.jar" />
-    </item>
-    <item
-        jar="/home/fzn/Development/NetworkStatistics/app/build/intermediates/exploded-aar/com.cardiomood.android/android-widgets/0.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="c05b677d8aca4e437294460acbc6f4d4bd9cfa0c">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/classes-de4bdd2694b49b7ef3a370ff25773861009423c8.jar" />
-    </item>
-    <item
-        jar="/home/fzn/.gradle/caches/modules-2/files-2.1/joda-time/joda-time/2.3/56498efd17752898cfcc3868c1b6211a07b12b8f/joda-time-2.3.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="56498efd17752898cfcc3868c1b6211a07b12b8f">
-        <dex dex="/home/fzn/Development/NetworkStatistics/app/build/intermediates/pre-dexed/debug/joda-time-2.3-afa4a7bf724799ac95a30caf6d4b75e0c78de035.jar" />
+        jar="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false" revision="22.0.1" sha1="5d4bccb885c8a89d066ecb6c4addb553a99a79a2">
+        <dex
+            dex="F:\Private\Android\Studio\NetworkStatistics\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-76380b1b1246900a1373f63bb06a688dea3e6201.jar" />
     </item>
 
 </items>

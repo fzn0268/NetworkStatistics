@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,14 +30,11 @@ import fzn.projects.networkstatistics.db.NetworkStatisticsDbHelper;
 import fzn.projects.networkstatistics.util.Util;
 
 /**
+ * 规则碎片
+ * 从数据库中查询并显示已添加的规则，列出规则中的总流量、已用流量、可用流量
  * Fragment used for managing interactions for and presentation of a navigation drawer.
  * See the <a href="https://developer.android.com/design/patterns/navigation-drawer.html#Interaction">
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
- */
-
-/**
- * 规则碎片类
- * 从数据库中查询并显示已添加的规则，列出规则中的总流量、已用流量、可用流量
  */
 public class RulesFragment extends Fragment implements
 		ListView.OnItemClickListener, ListView.OnItemLongClickListener {
@@ -51,6 +47,7 @@ public class RulesFragment extends Fragment implements
 	private static final String ARG_SECTION_NUMBER = "section_number";
 
 	private ListView mListView;
+	@android.support.annotation.Nullable
 	private SQLiteOpenHelper dbHelper;
 
 	// This is the Adapter being used to display the list's data.
@@ -58,8 +55,11 @@ public class RulesFragment extends Fragment implements
 
 	private long longClickId;
 
+	@android.support.annotation.NonNull
 	private ActionMode.Callback mActionModeCallback = new RulesActionModeCallback();
+	@android.support.annotation.Nullable
 	private ActionMode mActionMode;
+	@android.support.annotation.NonNull
 	private ArrayList<View> lastItems = new ArrayList<>();
 
 	private LocalBroadcastManager mLocalBcMgr;
@@ -68,6 +68,7 @@ public class RulesFragment extends Fragment implements
      * Returns a new instance of this fragment for the given section
      * number.
      */
+	@android.support.annotation.NonNull
 	public static RulesFragment newInstance(int sectionNumber) {
 		RulesFragment fragment = new RulesFragment();
 		Bundle args = new Bundle();
@@ -120,8 +121,8 @@ public class RulesFragment extends Fragment implements
     }
 	
 	@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+	public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView");
         final View view = inflater.inflate(R.layout.fragment_rules, container, false);
 		mListView = (ListView) view.findViewById(R.id.rule_list);
@@ -139,7 +140,7 @@ public class RulesFragment extends Fragment implements
     }
 	
 	@Override
-    public void onAttach(Activity activity) {
+	public void onAttach(@android.support.annotation.NonNull Activity activity) {
 		Log.d(TAG, "onAttach");
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
@@ -147,8 +148,8 @@ public class RulesFragment extends Fragment implements
     }
 	
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    // Inflate the menu items for use in the action bar
+	public void onCreateOptionsMenu(@android.support.annotation.NonNull Menu menu, @android.support.annotation.NonNull MenuInflater inflater) {
+		// Inflate the menu items for use in the action bar
 
 	    menu.setGroupVisible(R.id.main_action_group, false);
 	    inflater.inflate(R.menu.fragment_rules_menu, menu);
@@ -156,9 +157,9 @@ public class RulesFragment extends Fragment implements
 	}
 	
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
-	    switch (item.getItemId()) {
+	public boolean onOptionsItemSelected(@android.support.annotation.NonNull MenuItem item) {
+		// Handle presses on the action bar items
+		switch (item.getItemId()) {
 	        case R.id.new_rule:
 				startActivityForResult(new Intent(getActivity(), RuleOperationActivity.class),
 						Constants.RULE_ADD_REQUEST);
@@ -213,7 +214,7 @@ public class RulesFragment extends Fragment implements
 	 * @return true if the callback consumed the long click, false otherwise
 	 */
 	@Override
-	public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+	public boolean onItemLongClick(AdapterView<?> parent, @android.support.annotation.NonNull View view, int position, long id) {
 		Log.d(TAG, "onItemLongClick");
 		longClickId = position;
 		TextView idText = (TextView) view.findViewById(R.id.ruleId);
@@ -230,9 +231,7 @@ public class RulesFragment extends Fragment implements
 	}
 
 	/**
-	 * 加载规则任务类
-	 * 继承AsyncTask异步任务类，当切换至本碎片时将生成一个该类的实例，在后台加载
-	 * 数据库中存储的规则并显示，保证过程中不会因响应时间过长而阻塞应用。
+	 * 异步加载规则任务
 	 */
     private class LoadRulesTask extends AsyncTask<SQLiteOpenHelper, Integer, Cursor> {
 
@@ -265,7 +264,7 @@ public class RulesFragment extends Fragment implements
 
 			mAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
 				@Override
-				public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+				public boolean setViewValue(View view, @android.support.annotation.NonNull Cursor cursor, int columnIndex) {
 					if (view instanceof TextView) {
 						if ((columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_QUANTUM)
 								|| columnIndex == cursor.getColumnIndex(ComboEntry.COLUMN_USED)
@@ -316,7 +315,7 @@ public class RulesFragment extends Fragment implements
 		 * mode should be aborted.
 		 */
 		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		public boolean onCreateActionMode(@android.support.annotation.NonNull ActionMode mode, Menu menu) {
 			MenuInflater inflater = mode.getMenuInflater();
 			inflater.inflate(R.menu.fragment_rules_actionmode_menu, menu);
 			return true;
@@ -343,7 +342,7 @@ public class RulesFragment extends Fragment implements
 		 * invocation should continue.
 		 */
 		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		public boolean onActionItemClicked(ActionMode mode, @android.support.annotation.NonNull MenuItem item) {
 			switch (item.getItemId()) {
 				case R.id.rule_edit: {
 					Intent intent = new Intent(getActivity(), RuleOperationActivity.class);

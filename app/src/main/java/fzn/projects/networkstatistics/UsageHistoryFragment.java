@@ -20,7 +20,7 @@ import java.util.Map;
 import fzn.projects.networkstatistics.util.AppContent;
 
 /**
- * 应用数据用量碎片类
+ * 应用数据用量碎片
  * 列出各应用自开机时接收和发送的流量
  *
  * A fragment representing a list of Items.
@@ -48,15 +48,8 @@ public class UsageHistoryFragment extends Fragment implements
 	 */
 	private AbsListView mListView;
 
-	/**
-	 * The Adapter which will be used to populate the ListView/GridView with
-	 * Views.
-	 */
-	private SimpleAdapter mAdapter;
-	
-	private AppContent appInfos;
-
 	// TODO: Rename and change types of parameters
+	@android.support.annotation.NonNull
 	public static UsageHistoryFragment newInstance(int sectionNumber) {
 		UsageHistoryFragment fragment = new UsageHistoryFragment();
 		Bundle args = new Bundle();
@@ -79,7 +72,7 @@ public class UsageHistoryFragment extends Fragment implements
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
 		View view = inflater.inflate(R.layout.fragment_appdatausage, container,
@@ -96,7 +89,7 @@ public class UsageHistoryFragment extends Fragment implements
 	}
 
 	@Override
-	public void onAttach(Activity activity) {
+	public void onAttach(@android.support.annotation.NonNull Activity activity) {
 		super.onAttach(activity);
 		((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
@@ -126,17 +119,15 @@ public class UsageHistoryFragment extends Fragment implements
 	}
 
 	/**
-	 * 加载应用任务类
-	 * 继承AsyncTask异步任务类，当切换至本碎片时将生成一个该类的实例，在后台加载
-	 * 各应用的图标、名称、已接收和发送的流量并显示，保证过程中不会因响应时间过长
-	 * 而阻塞应用。
+	 * 异步加载应用
+	 * 在后台加载各应用的图标、名称、已接收和发送的流量
 	 */
 	private class LoadAppsTask extends AsyncTask<Object, Integer, List<Map<String, Object>>> {
 
+		@android.support.annotation.NonNull
 		@Override
 		protected List<Map<String, Object>> doInBackground(Object... params) {
-			// TODO �Զ����ɵķ������
-			appInfos = new AppContent(getActivity());
+			AppContent appInfos = new AppContent(getActivity());
 			return appInfos.loadItem();
 		}
 		
@@ -144,22 +135,25 @@ public class UsageHistoryFragment extends Fragment implements
 		protected void onPostExecute(List<Map<String, Object>> result) {
 			
 			// Set the adapter
-			mAdapter = new SimpleAdapter(getActivity(), result, R.layout.app_item,
-					new String[] {"icon", "label", "rx", "tx"},
-					new int[] {R.id.app_icon, R.id.app_name, R.id.app_rx, R.id.app_tx});
+			/*
+	  The Adapter which will be used to populate the ListView/GridView with
+	  Views.
+	 */
+			SimpleAdapter mAdapter = new SimpleAdapter(getActivity(), result, R.layout.app_item,
+					new String[]{"icon", "label", "rx", "tx"},
+					new int[]{R.id.app_icon, R.id.app_name, R.id.app_rx, R.id.app_tx});
 			mAdapter.setViewBinder(new SimpleAdapter.ViewBinder() {
 
 				@Override
 				public boolean setViewValue(View view, Object data,
-						String textRepresentation) {
-					// TODO �Զ����ɵķ������
+											String textRepresentation) {
 					if (view instanceof ImageView && data instanceof Drawable) {
 						((ImageView) view).setImageDrawable((Drawable) data);
 						return true;
 					}
 					return false;
 				}
-				
+
 			});
 			mListView.setAdapter(mAdapter);
 		}

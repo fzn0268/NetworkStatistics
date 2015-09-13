@@ -1,9 +1,6 @@
 package fzn.projects.networkstatistics;
 
 import java.text.DecimalFormat;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import fzn.projects.networkstatistics.db.*;
 import fzn.projects.networkstatistics.db.NetworkStatisticsContract.ComboEntry;
@@ -16,8 +13,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,22 +31,20 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
 /**
- * 添加规则活动类
- * 生成添加规则的对话框
+ * 添加规则活动
  */
 public class RuleOperationActivity extends Activity {
-	protected static final String TAG = "RuleOperationActivity";
+	protected static final String TAG = RuleOperationActivity.class.getSimpleName();
 	
 	private Spinner networkTypeSpinner, periodUnitSpinner, totalUnitSpinner, usedUnitSpinner;
 	private final BiMap<Integer, Integer> networkType = HashBiMap.create();
 	private TimePicker beginTimePicker, endTimePicker;
 	private EditText ruleNameInput, totalDataInput, usedDataInput, periodInput, priorityInput;
-	private RadioGroup timeIntervalRadioGroup;
 	private LinearLayout timeIntervalLayout;
 	private RadioButton allDay, partialTime;
 	private Resources res;
 	private Intent intent;
-	private boolean bEdit;
+	private boolean bEditMode;
 
 	final char[] timeUnit = Constants.TIME_UNIT;
 
@@ -71,16 +64,19 @@ public class RuleOperationActivity extends Activity {
 		periodUnitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		periodUnitSpinner.setAdapter(periodUnitAdapter);
 
-		timeIntervalRadioGroup = (RadioGroup) findViewById(R.id.timeIntervalRadioGroup);
+		RadioGroup timeIntervalRadioGroup = (RadioGroup) findViewById(R.id.timeIntervalRadioGroup);
 		allDay = (RadioButton) findViewById(R.id.allDayRadio);
 		partialTime = (RadioButton) findViewById(R.id.partialTimeRadio);
+
+		// Hide time pickers.
 		timeIntervalLayout = (LinearLayout) findViewById(R.id.timeIntervalLayout);
 		timeIntervalLayout.setVisibility(View.GONE);
+
+		// Initialize time pickers.
 		beginTimePicker = (TimePicker) findViewById(R.id.beginTimePicker);
 		beginTimePicker.setIs24HourView(true);
 		beginTimePicker.setCurrentHour(0);
 		beginTimePicker.setCurrentMinute(0);
-
 		endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
 		endTimePicker.setIs24HourView(true);
 		endTimePicker.setCurrentHour(0);
@@ -112,11 +108,9 @@ public class RuleOperationActivity extends Activity {
 		ruleNameInput = (EditText) findViewById(R.id.ruleNameInput);
 		
 		totalDataInput = (EditText) findViewById(R.id.totalDataInput);
-		//totalDataInput.addTextChangedListener(new DataInputWatcher(totalDataInput));
 		totalUnitSpinner = (Spinner) findViewById(R.id.totalUnitSpinner);
 		
 		usedDataInput = (EditText) findViewById(R.id.usedDataInput);
-		//usedDataInput.addTextChangedListener(new DataInputWatcher(usedDataInput));
 		usedUnitSpinner = (Spinner) findViewById(R.id.usedUnitSpinner);
 		
 		periodInput = (EditText) findViewById(R.id.periodInput);
@@ -126,10 +120,10 @@ public class RuleOperationActivity extends Activity {
 		intent = getIntent();
 		if (intent.hasExtra(Constants.Extra.COMBO_ID)) {
 			setTitle(getResources().getString(R.string.title_activity_edit_rule));
-			bEdit = true;
+			bEditMode = true;
 			readRule(intent.getLongExtra(Constants.Extra.COMBO_ID, -1));
 		} else {
-			bEdit = false;
+			bEditMode = false;
 		}
 	}
 
@@ -141,7 +135,7 @@ public class RuleOperationActivity extends Activity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(@android.support.annotation.NonNull MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
@@ -200,7 +194,7 @@ public class RuleOperationActivity extends Activity {
 	}
 
 	/**
-	 * 确定按钮的行为方法
+	 * 确定按钮
 	 * 将填入的信息插入数据库
 	 * @param v
 	 */
@@ -250,7 +244,7 @@ public class RuleOperationActivity extends Activity {
 		values.put(ComboEntry.COLUMN_TIME_INTERVAL_FROM, beginTimePicker.getCurrentHour() + ":" + beginTimePicker.getCurrentMinute());
 		values.put(ComboEntry.COLUMN_TIME_INTERVAL_TO, endTimePicker.getCurrentHour() + ":" + endTimePicker.getCurrentMinute());
 		long rowID;
-		if (!bEdit) {
+		if (!bEditMode) {
 			if ((rowID = db.insert(ComboEntry.TABLE_NAME, null, values)) != -1) {
 				Intent intent = new Intent(Constants.Intent.ACTION_RULE_CHANGED);
 				intent.putExtra(Constants.Extra.COMBO_ID, rowID);
@@ -273,51 +267,12 @@ public class RuleOperationActivity extends Activity {
 	}
 
 	/**
-	 * 取消按钮的行为方法
+	 * 取消按钮
 	 * @param v
 	 */
 	public void addRuleCancel(View v) {
 		setResult(Activity.RESULT_CANCELED);
 		finish();
-	}
-	
-	private class DataInputWatcher implements TextWatcher {
-		
-		private EditText editText;
-		
-		public DataInputWatcher(EditText editText) {
-			this.editText = editText;
-		}
-
-		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count,
-				int after) {
-			// TODO 自动生成的方法存根
-			
-		}
-
-		@Override
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
-			// TODO 自动生成的方法存根
-			String text = editText.toString();
-			String str = stringFilter(text);
-			if (!text.equals(str))
-				editText.setText(str);
-		}
-
-		@Override
-		public void afterTextChanged(Editable s) {
-			// TODO 自动生成的方法存根
-			
-		}
-		
-		private String stringFilter(String str) throws PatternSyntaxException{
-	        String regEx = "\\d+[bBkKmMtT]";
-	        Pattern p = Pattern.compile(regEx);
-	        Matcher m = p.matcher(str);
-	        return m.replaceAll("");
-	    }
 	}
 
 }

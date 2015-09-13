@@ -32,11 +32,16 @@ import fzn.projects.networkstatistics.db.NetworkStatisticsDbHelper;
 public class RulesDaemon {
     private static final String TAG = RulesDaemon.class.getSimpleName();
 
+    @android.support.annotation.NonNull
     private final Context mContext;
+    @android.support.annotation.NonNull
     private final AlarmManager mAlarmMgr;
+    @android.support.annotation.NonNull
     private final ConnectivityManager mConnMgr;
     private final LocalBroadcastManager mLocalBcMgr;
+    @android.support.annotation.NonNull
     private final IntentFilter mRulesDaemonIntentFilter;
+    @android.support.annotation.NonNull
     private final BroadcastReceiver mRulesDaemonBcRecvr;
     private final SparseArray<Rule> rules = new SparseArray<>();
     private final HashMap<Long, Rule> inIntervalRules = new HashMap<>();
@@ -50,7 +55,7 @@ public class RulesDaemon {
             ComboEntry.COLUMN_PRIORITY,
             ComboEntry.COLUMN_TIME_INTERVAL_FROM, ComboEntry.COLUMN_TIME_INTERVAL_TO};
 
-    public RulesDaemon(Context context) {
+    public RulesDaemon(@android.support.annotation.NonNull Context context) {
         mContext = context;
         mAlarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         mConnMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -122,7 +127,7 @@ public class RulesDaemon {
         }
     }
 
-    private void registerRule(Rule rule) {
+    private void registerRule(@android.support.annotation.NonNull Rule rule) {
         Log.d(TAG, "registerRule");
         if (rule.isAllDay) {
             inIntervalRules.put(rule.id, rule);
@@ -156,7 +161,7 @@ public class RulesDaemon {
         }
     }
 
-    private void unregisterRule(Rule rule) {
+    private void unregisterRule(@android.support.annotation.NonNull Rule rule) {
         Log.d(TAG, "unregisterRule");
         if (inIntervalRules.get(rule.id) != null) {
             endRule(rule);
@@ -170,7 +175,7 @@ public class RulesDaemon {
         }
     }
 
-    private void beginRule(Rule rule) {
+    private void beginRule(@android.support.annotation.NonNull Rule rule) {
         Log.d(TAG, "beginRule");
         // check priorities between parameter and every of currents.
         for (Rule curRule : inIntervalRules.values()) {
@@ -187,7 +192,7 @@ public class RulesDaemon {
         }
     }
 
-    private void endRule(Rule rule) {
+    private void endRule(@android.support.annotation.NonNull Rule rule) {
         Log.d(TAG, "endRule");
         if (runningRules.get((int) rule.id) != null) {
             for (Rule curRule : inIntervalRules.values()) {
@@ -234,7 +239,8 @@ public class RulesDaemon {
         protected final boolean isAllDay;
         protected long curUsed, oldUsed;
         protected PendingIntent timeFromIntent, timeToIntent;
-        public Rule(long id, byte conn, short[] period, long quantum, int priority, String timeFrom, String timeTo) {
+
+        public Rule(long id, byte conn, short[] period, long quantum, int priority, @android.support.annotation.NonNull String timeFrom, String timeTo) {
             this.id = id;
             this.conn = conn;
             this.period = period[0];
@@ -256,24 +262,22 @@ public class RulesDaemon {
             if (isAllDay)
                 return true;
             LocalTime nowTime = LocalTime.now();
-            if (nowTime.isAfter(timeFrom) && nowTime.isBefore(timeTo))
-                return true;
-            else
-                return false;
+            return nowTime.isAfter(timeFrom) && nowTime.isBefore(timeTo);
         }
 
         protected synchronized void obtainDataUsedAndStart() {
             Log.d(TAG, "obtainDataUsedAndStart");
-                Cursor c = mDb.query(ComboEntry.TABLE_NAME, new String[] {ComboEntry.COLUMN_USED},
-                        ComboEntry._ID + " LIKE ?", new String[] {String.valueOf(id)},
-                        null, null, null);
-                c.moveToFirst();
-                oldUsed = c.getLong(c.getColumnIndex(ComboEntry.COLUMN_USED));
-                if (conn == ConnectivityManager.TYPE_MOBILE)
-                    curUsed = TrafficStats.getMobileTxBytes() + TrafficStats.getMobileRxBytes();
-                else
-                    curUsed = TrafficStats.getTotalTxBytes() + TrafficStats.getTotalRxBytes()
-                            - TrafficStats.getMobileTxBytes() - TrafficStats.getMobileRxBytes();
+            Cursor c = mDb.query(ComboEntry.TABLE_NAME, new String[]{ComboEntry.COLUMN_USED},
+                    ComboEntry._ID + " LIKE ?", new String[]{String.valueOf(id)},
+                    null, null, null);
+            c.moveToFirst();
+            oldUsed = c.getLong(c.getColumnIndex(ComboEntry.COLUMN_USED));
+            c.close();
+            if (conn == ConnectivityManager.TYPE_MOBILE)
+                curUsed = TrafficStats.getMobileTxBytes() + TrafficStats.getMobileRxBytes();
+            else
+                curUsed = TrafficStats.getTotalTxBytes() + TrafficStats.getTotalRxBytes()
+                        - TrafficStats.getMobileTxBytes() - TrafficStats.getMobileRxBytes();
         }
 
         protected synchronized void commitDataUsedAndStop() {
@@ -327,7 +331,7 @@ public class RulesDaemon {
          * @param intent  The Intent being received.
          */
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @android.support.annotation.NonNull Intent intent) {
             Log.d(TAG, "onReceive");
             long rowID = 0;
             if (intent.getAction().equals(Constants.Intent.ACTION_RULE_CHANGED)) {
@@ -378,15 +382,4 @@ public class RulesDaemon {
         }
     }
 
-    private class RuleHandler extends Handler {
-        /**
-         * Subclasses must implement this to receive messages.
-         *
-         * @param msg
-         */
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-        }
-    }
 }

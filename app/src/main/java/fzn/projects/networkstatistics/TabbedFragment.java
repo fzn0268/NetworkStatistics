@@ -6,13 +6,11 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.annotation.Nullable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,9 +18,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 /**
- * 标签碎片类
- * 将状态菜单项的两个碎片类{@link OverviewFragment} {@link StatusFragment}
- * 合并在此碎片中切换显示。
+ * 标签碎片
+ * 将状态菜单的两个碎片类{@link OverviewFragment} {@link StatusFragment}
+ * 并在此碎片中切换显示。
  */
 public class TabbedFragment extends Fragment {
     private static final String TAG = TabbedFragment.class.getSimpleName();
@@ -47,6 +45,7 @@ public class TabbedFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final int PAGES = 2;
     private int sectionNumber;
 
     private String[] mTabTitleItems;
@@ -55,6 +54,7 @@ public class TabbedFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
+    @android.support.annotation.NonNull
     public static TabbedFragment newInstance(int sectionNumber) {
         TabbedFragment fragment = new TabbedFragment();
         Bundle args = new Bundle();
@@ -70,7 +70,7 @@ public class TabbedFragment extends Fragment {
      * @param activity
      */
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(@android.support.annotation.NonNull Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(
                 getArguments().getInt(ARG_SECTION_NUMBER));
@@ -106,7 +106,7 @@ public class TabbedFragment extends Fragment {
      */
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
 
         mTabTitleItems = getResources().getStringArray(R.array.statusTabTitle);
@@ -128,7 +128,7 @@ public class TabbedFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@android.support.annotation.NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -169,9 +169,10 @@ public class TabbedFragment extends Fragment {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return PAGES;
         }
 
+        @android.support.annotation.Nullable
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
@@ -199,6 +200,7 @@ public class TabbedFragment extends Fragment {
          * Returns a new instance of this fragment for the given section
          * number.
          */
+        @android.support.annotation.NonNull
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -226,7 +228,7 @@ public class TabbedFragment extends Fragment {
          */
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content, container, false);
             TextView dummyTextView = (TextView) rootView

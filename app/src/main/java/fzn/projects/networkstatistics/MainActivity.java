@@ -16,8 +16,7 @@ import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 
 /**
- * 主活动类
- * 所有碎片的根活动
+ * 主活动
  */
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
@@ -102,6 +101,7 @@ public class MainActivity extends Activity
 
     public void restoreActionBar() {
         ActionBar actionBar = getActionBar();
+        assert actionBar != null;
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
@@ -122,7 +122,7 @@ public class MainActivity extends Activity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@android.support.annotation.NonNull MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -145,7 +145,7 @@ public class MainActivity extends Activity
         }
 	}
 
-    private boolean isServiceRunning(Class<?> serviceClass) {
+    private boolean isServiceRunning(@android.support.annotation.NonNull Class<?> serviceClass) {
         ActivityManager activityManager =
                 (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo serviceInfo :
@@ -170,6 +170,7 @@ public class MainActivity extends Activity
          * Returns a new instance of this fragment for the given section
          * number.
          */
+        @android.support.annotation.NonNull
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -182,14 +183,14 @@ public class MainActivity extends Activity
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@android.support.annotation.NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
 
         @Override
-        public void onAttach(Activity activity) {
+        public void onAttach(@android.support.annotation.NonNull Activity activity) {
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));

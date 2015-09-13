@@ -7,15 +7,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.widget.RemoteViews;
 
 /**
- * 通知类
- * 用于生成网络状态通知
+ * 通知
+ * 网络状态通知
  * Helper class for showing and canceling net speed notifications.
  * <p>
  * This class makes heavy use of the {@link NotificationCompat.Builder} helper
@@ -25,7 +23,7 @@ public class MeterNotification {
 	/**
 	 * The unique identifier for this type of notification.
 	 */
-	protected static final String NOTIFICATION_TAG = "MeterNotification";
+	protected static final String TAG = MeterNotification.class.getSimpleName();
 
 	/**
 	 * Shows the notification, or updates a previously shown notification of
@@ -41,17 +39,13 @@ public class MeterNotification {
 	 *
 	 * @see #cancel(Context)
 	 */
-	public static Notification notify(final Context context,
-			final String tickerString, final String titleString,
-			final String textString, final Intent intent) {
+	public static Notification notify(@android.support.annotation.NonNull final Context context,
+									  final String tickerString, final Intent intent) {
 		final Resources res = context.getResources();
 
 		// This image is used as the notification's large icon (thumbnail).
 		// TODO: Remove this if your notification has no relevant thumbnail.
-		final Bitmap picture = BitmapFactory.decodeResource(res,
-				R.drawable.example_picture);
 
-		final String ticker = tickerString;
 		//final String title = res.getString(R.string.net_speed_notification_rate, titleString);
 		//final String text = res.getString(R.string.net_speed_notification_used, textString);
 		
@@ -84,7 +78,7 @@ public class MeterNotification {
 				// .setLargeIcon(picture)
 
 				// Set ticker text (preview) information for this notification.
-				.setTicker(ticker)
+				.setTicker(tickerString)
 
 				// Show a number. This is useful when stacking notifications of
 				// a single type.
@@ -117,14 +111,14 @@ public class MeterNotification {
 	}
 
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
-	private static void notify(final Context context,
-			final Notification notification) {
+	private static void notify(@android.support.annotation.NonNull final Context context,
+							   @android.support.annotation.NonNull final Notification notification) {
 		final NotificationManager nm = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-			nm.notify(NOTIFICATION_TAG, 0, notification);
+			nm.notify(TAG, 0, notification);
 		} else {
-			nm.notify(NOTIFICATION_TAG.hashCode(), notification);
+			nm.notify(TAG.hashCode(), notification);
 		}
 	}
 
@@ -133,13 +127,13 @@ public class MeterNotification {
 	 * {@link #notify(Context, String, int)}.
 	 */
 	@TargetApi(Build.VERSION_CODES.ECLAIR)
-	public static void cancel(final Context context) {
+	public static void cancel(@android.support.annotation.NonNull final Context context) {
 		final NotificationManager nm = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-			nm.cancel(NOTIFICATION_TAG, 0);
+			nm.cancel(TAG, 0);
 		} else {
-			nm.cancel(NOTIFICATION_TAG.hashCode());
+			nm.cancel(TAG.hashCode());
 		}
 	}
 

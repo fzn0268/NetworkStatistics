@@ -8,23 +8,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- *  数据库辅助类
- *  提供数据库生成、更新方法
- */
 public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
-	
+
+	private static final String TAG = NetworkStatisticsDbHelper.class.getSimpleName();
 	public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "NetworkStatistics.db";
     
     private static final String COMMA = ",";
     private static final String SPACE = " ";
 
+	@android.support.annotation.Nullable
 	private static SQLiteOpenHelper mInstance = null;
 
-	/**
-	 * 创建应用信息表命令
-	 */
     private static final String CREATE_APPLICATION_TABLE =
     		"CREATE TABLE " + AppEntry.TABLE_NAME + "(" +
     				AppEntry._ID + " INTEGER PRIMARY KEY," +
@@ -36,9 +31,6 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
     				AppEntry.COLUMN_MO_RECEIVED + SPACE + AppEntry.TYPE_INT + COMMA +
     				AppEntry.COLUMN_EXIST + SPACE + AppEntry.COLUMN_EXIST_TYPE + ")";
 
-	/**
-	 * 创建规则表命令
-	 */
     private static final String CREATE_COMBO_TABLE =
     		"CREATE TABLE " + ComboEntry.TABLE_NAME + "(" +
     				ComboEntry._ID + " INTEGER PRIMARY KEY," +
@@ -59,7 +51,8 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
     private static final String DELETE_COMBO_TABLE =
     		"DROP TABLE IF EXISTS " + ComboEntry.TABLE_NAME;
 
-	public static SQLiteOpenHelper getInstance(Context context) {
+	@android.support.annotation.Nullable
+	public static SQLiteOpenHelper getInstance(@android.support.annotation.NonNull Context context) {
 		// Use the application context, which will ensure that you
 		// don't accidentally leak an Activity's context.
 		if (mInstance == null) {
@@ -85,26 +78,16 @@ public class NetworkStatisticsDbHelper extends SQLiteOpenHelper {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
 
-	/**
-	 * 创建表方法
-	 * @param db
-	 */
 	@Override
-	public void onCreate(SQLiteDatabase db) {
+	public void onCreate(@android.support.annotation.NonNull SQLiteDatabase db) {
 		// TODO 自动生成的方法存根
 		db.execSQL(CREATE_APPLICATION_TABLE);
 		db.execSQL(CREATE_COMBO_TABLE);
 
 	}
 
-	/**
-	 * 升级数据表方法
-	 * @param db
-	 * @param oldVersion
-	 * @param newVersion
-	 */
 	@Override
-	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+	public void onUpgrade(@android.support.annotation.NonNull SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO 自动生成的方法存根
 		db.execSQL(DELETE_APPLICATION_TABLE);
 		db.execSQL(DELETE_COMBO_TABLE);

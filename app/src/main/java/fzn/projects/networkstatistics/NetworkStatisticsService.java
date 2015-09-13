@@ -14,15 +14,15 @@ import android.util.Log;
 import fzn.projects.networkstatistics.util.RulesDaemon;
 
 /**
- * 服务类
+ * 服务
  * 处理后台任务，管理速率通知
  */
 public class NetworkStatisticsService extends Service {
     protected static final String TAG = "NetStatService";
 
+    @android.support.annotation.Nullable
     private static NetworkStatisticsService instance = null;
     private NetworkStatisticsReceiver netStatReceiver;
-    private IntentFilter intentFilter;
 
     private ConnectivityManager connManager;
     private NetworkInfo activeInfo;
@@ -44,7 +44,8 @@ public class NetworkStatisticsService extends Service {
         netStatReceiver = new NetworkStatisticsReceiver();
         connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         activeInfo = connManager.getActiveNetworkInfo();
-        intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
+        // Register filter for monitoring the status of screen.
+        IntentFilter intentFilter = new IntentFilter(Intent.ACTION_SCREEN_OFF);
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(netStatReceiver, intentFilter);
         notifDaemon = new NotificationsDaemon(this);
@@ -114,7 +115,7 @@ public class NetworkStatisticsService extends Service {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(@android.support.annotation.Nullable Intent intent) {
         Log.d(TAG, "onBind");
         if (intent != null) {
             return new NotificationControlBinder();
@@ -123,28 +124,12 @@ public class NetworkStatisticsService extends Service {
     }
 
     /**
-     * 判断服务是否已启动
-     * @return 服务状态
-     */
-    public static boolean isServiceCreated() {
-        return instance != null;
-    }
-
-    /**
-     * 获取服务实例
-     * 若服务已启动，返回实例，否则返回null
-     * @return 服务实例或null
-     */
-    protected static NetworkStatisticsService getInstance() { return instance != null ? instance : null; }
-
-    /**
-     * 通知控制连结类
-     * 为控制通知是否显示提供方法
+     * 通知控制
      */
     public class NotificationControlBinder extends Binder {
         /**
-         * 切换通知状态方法
-         * 根据活动网络的状态选择是否显示通知
+         * 切换通知状态
+         * 根据网络的状态确定是否显示通知
          * 若网络可用，调用{@link NotificationsDaemon#scheduleNotification()}
          * 否则调用{@link NotificationsDaemon#cancelNotification()}
          */
@@ -160,13 +145,13 @@ public class NetworkStatisticsService extends Service {
         }
 
         /**
-         * 显示通知方法
+         * 显示通知
          * 调用{@link NotificationsDaemon#scheduleNotification()}
          */
         public void scheduleNotification() { notifDaemon.scheduleNotification(); }
 
         /**
-         * 取消通知方法
+         * 取消通知
          * 调用{@link NotificationsDaemon#cancelNotification()}
          */
         public void cancelNotification() { notifDaemon.cancelNotification(); }
