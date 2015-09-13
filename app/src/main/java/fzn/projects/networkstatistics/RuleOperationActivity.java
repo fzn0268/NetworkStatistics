@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class RuleOperationActivity extends Activity {
 	private final BiMap<Integer, Integer> networkType = HashBiMap.create();
 	private TimePicker beginTimePicker, endTimePicker;
 	private EditText ruleNameInput, totalDataInput, usedDataInput, periodInput, priorityInput;
-	private LinearLayout timeIntervalLayout;
+	private RelativeLayout timeIntervalLayout;
 	private RadioButton allDay, partialTime;
 	private Resources res;
 	private Intent intent;
@@ -69,7 +70,7 @@ public class RuleOperationActivity extends Activity {
 		partialTime = (RadioButton) findViewById(R.id.partialTimeRadio);
 
 		// Hide time pickers.
-		timeIntervalLayout = (LinearLayout) findViewById(R.id.timeIntervalLayout);
+		timeIntervalLayout = (RelativeLayout) findViewById(R.id.timeIntervalLayout);
 		timeIntervalLayout.setVisibility(View.GONE);
 
 		// Initialize time pickers.
@@ -150,6 +151,10 @@ public class RuleOperationActivity extends Activity {
 		if (id == -1) return;
 		Log.d(TAG, "readRule ID " + id);
 		SQLiteDatabase db = NetworkStatisticsDbHelper.getInstance(this).getReadableDatabase();
+		if (db == null) {
+			Log.e(TAG, "Failed to read rule.");
+			return;
+		}
 		Cursor cursor = db.query(ComboEntry.TABLE_NAME,
 				new String[] {ComboEntry.COLUMN_NAME,
 						ComboEntry.COLUMN_CONN, ComboEntry.COLUMN_PERIOD,
@@ -214,6 +219,10 @@ public class RuleOperationActivity extends Activity {
 			}
 		}
 		SQLiteDatabase db = NetworkStatisticsDbHelper.getInstance(this).getWritableDatabase();
+		if (db == null) {
+			Log.e(TAG, "Fail to write rule.");
+			return;
+		}
 
 		String usedStr = usedDataInput.getText().toString().equals("") ? "0" : usedDataInput.getText().toString();
 

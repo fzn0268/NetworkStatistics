@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,11 +12,11 @@
     <ScrollView
         android:id="@+id/addRuleScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="top|center"
-        android:layout_weight="1" >
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="top|center">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -33,6 +33,7 @@
                 android:id="@+id/ruleNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/ruleNameTitle"
                 android:ems="10"
                 android:hint=""
                 android:inputType="text"
@@ -43,6 +44,7 @@
                 android:id="@+id/networkTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/ruleNameInput"
                 android:text="@string/network"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -50,104 +52,94 @@
                 android:id="@+id/networkSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/networkTitle"
                 android:entries="@array/networkConnection" />
 
             <TextView
                 android:id="@+id/totalDataTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/networkSpinner"
                 android:text="@string/dataTotal"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/totalDataInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/totalDataTitle"
+                android:ems="10"
+                android:hint="500"
+                android:inputType="number"
+                android:singleLine="true"
+                android:tag="@string/ruleItemTotal" />
 
-                <EditText
-                    android:id="@+id/totalDataInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="500"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:tag="@string/ruleItemTotal" />
-
-                <Spinner
-                    android:id="@+id/totalUnitSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:entries="@array/dataUnit" />
-
-            </LinearLayout>
+            <Spinner
+                android:id="@+id/totalUnitSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/totalDataInput"
+                android:layout_below="@id/totalDataTitle"
+                android:entries="@array/dataUnit" />
 
             <TextView
                 android:id="@+id/usedTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/totalDataInput"
                 android:text="@string/dataUsed"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/usedDataInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/usedTitle"
+                android:ems="10"
+                android:hint="0"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:tag="@string/ruleItemUsed" />
 
-                <EditText
-                    android:id="@+id/usedDataInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="0"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    android:tag="@string/ruleItemUsed" />
-
-                <Spinner
-                    android:id="@+id/usedUnitSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:entries="@array/dataUnit" />
-
-            </LinearLayout>
+            <Spinner
+                android:id="@+id/usedUnitSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/usedDataInput"
+                android:layout_below="@id/usedTitle"
+                android:entries="@array/dataUnit" />
 
             <TextView
                 android:id="@+id/periodTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/usedDataInput"
                 android:text="@string/ruleItemPeriod"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <EditText
+                android:id="@+id/periodInput"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/periodTitle"
+                android:ems="10"
+                android:hint="1"
+                android:inputType="date"
+                android:singleLine="true"
+                android:tag="@string/ruleItemPeriod" />
 
-                <EditText
-                    android:id="@+id/periodInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="1"
-                    android:inputType="date"
-                    android:singleLine="true"
-                    android:tag="@string/ruleItemPeriod" />
-
-                <Spinner
-                    android:id="@+id/periodUnitSpinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:entries="@array/timeUnit" />
-
-            </LinearLayout>
+            <Spinner
+                android:id="@+id/periodUnitSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/periodTitle"
+                android:layout_toEndOf="@id/periodInput"
+                android:entries="@array/timeUnit" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/periodInput"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/rulePriority"
                 android:id="@+id/priorityTitle" />
@@ -155,6 +147,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/priorityTitle"
                 android:inputType="number"
                 android:ems="10"
                 android:id="@+id/priorityInput"
@@ -164,12 +157,14 @@
                 android:id="@+id/timeIntervalTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/priorityInput"
                 android:text="@string/ruleTimeInterval"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/timeIntervalTitle"
                 android:orientation="horizontal"
                 android:id="@+id/timeIntervalRadioGroup">
 
@@ -187,62 +182,65 @@
                     android:id="@+id/partialTimeRadio" />
             </RadioGroup>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:id="@+id/timeIntervalLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="fill_horizontal"
-                android:orientation="vertical"
-                android:id="@+id/timeIntervalLayout">
+                android:layout_below="@id/timeIntervalRadioGroup">
 
                 <TimePicker
                     android:id="@+id/beginTimePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|center"
                     android:timePickerMode="spinner" />
 
                 <TextView
                     android:id="@+id/line"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|center_horizontal|center"
+                    android:layout_below="@id/beginTimePicker"
+                    android:gravity="center"
                     android:text="|"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TimePicker
                     android:id="@+id/endTimePicker"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/line"
                     android:layout_gravity="center_vertical|center"
                     android:timePickerMode="spinner" />
-            </LinearLayout>
-        </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/timeIntervalLayout"
+                android:gravity="bottom|center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancelRuleButton"
+                    style="android:buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="addRuleCancel"
+                    android:text="@android:string/cancel" />
+
+                <Button
+                    android:id="@+id/okRuleButton"
+                    style="android:buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/cancelRuleButton"
+                    android:onClick="addRuleOk"
+                    android:text="@android:string/ok" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:gravity="bottom|center_horizontal"
-        android:orientation="horizontal" >
 
-        <Button
-            android:id="@+id/cancelRuleButton"
-            style="android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addRuleCancel"
-            android:text="@android:string/cancel" />
-
-        <Button
-            android:id="@+id/okRuleButton"
-            style="android:buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addRuleOk"
-            android:text="@android:string/ok" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

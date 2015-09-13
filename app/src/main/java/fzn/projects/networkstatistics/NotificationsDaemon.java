@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -69,8 +70,13 @@ public class NotificationsDaemon {
 	 * 生成信息并显示通知
 	 */
 	private void showNetSpeed() {
-        long nowTotalRxBytes = getTotalRxBytes();
-        long nowTimeStamp = System.currentTimeMillis();
+		NetworkInfo activeInfo = connMgr.getActiveNetworkInfo();
+		if (activeInfo == null) {
+			mNotificationManager.cancel(MeterNotification.TAG, uid);
+			return;
+		}
+		long nowTotalRxBytes = getTotalRxBytes();
+		long nowTimeStamp = System.currentTimeMillis();
         speed = ((nowTotalRxBytes - lastTotalRxBytes) * 1000 / (nowTimeStamp - lastTimeStamp));//毫秒转换
 		String strSpeed = Util.byteConverter(speed, true, "0.##");
 		Intent speedIntent = new Intent();
@@ -80,7 +86,8 @@ public class NotificationsDaemon {
         
         lastTimeStamp = nowTimeStamp;
         lastTotalRxBytes = nowTotalRxBytes;
-        switch (connMgr.getActiveNetworkInfo().getType()) {
+
+		switch (activeInfo.getType()) {
 			case ConnectivityManager.TYPE_WIFI:
 			{
 				WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
